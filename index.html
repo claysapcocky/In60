@@ -35,10 +35,31 @@
 .weighted-total strong{color:var(--green);font-size:12px;margin-left:5px}
 @media(max-width:820px){.weighted-game{grid-template-columns:1fr}.weighted-stage{min-height:430px}.weighted-balance{height:300px}}
 @media(max-width:520px){.weighted-stage{padding:16px 10px;min-height:400px}.weighted-balance{height:260px;padding-left:0;padding-right:0}.weighted-pan{min-height:150px;padding:22px 5px 26px}.weighted-icon{font-size:38px}.weighted-pan strong{font-size:18px}.weighted-pan>span:last-child{font-size:12px}.weighted-controls{padding:20px 18px}.weighted-result{align-items:flex-end}.weighted-result .primary{padding:10px 9px;font-size:11px}}
+</style><style>
+.hangman-game{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.9fr);gap:18px;align-items:stretch}
+.hangman-board,.hangman-side{padding:22px}
+.hangman-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 22px}
+.hangman-drawing{width:min(100%,420px);height:280px;display:block;margin:0 auto 12px}
+.hangman-drawing path,.hangman-drawing circle{fill:none;stroke:var(--green);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.hangman-drawing .person-part{display:none}
+.hangman-word{min-height:68px;display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:10px 0 22px}
+.hangman-letter{width:32px;height:42px;border-bottom:3px solid var(--green);display:grid;place-items:center;font:700 24px 'Space Grotesk',sans-serif;text-transform:uppercase}
+.hangman-letter.space{width:15px;border:0}
+.hangman-letter.punctuation{border:0}
+.hangman-category-choice{border:1px solid var(--line);background:#fffefa;border-radius:20px;padding:8px 12px;color:var(--muted);font-size:11px;font-weight:700}
+.hangman-category-choice.active{background:var(--green);border-color:var(--green);color:white}
+.hangman-keys{display:grid;grid-template-columns:repeat(7,minmax(32px,1fr));gap:7px}
+.hangman-key{border:1px solid var(--line);background:#fffefa;border-radius:7px;padding:9px 0;font-weight:700;color:var(--green)}
+.hangman-key:disabled{opacity:.35;cursor:default}
+.hangman-status{margin-top:16px}
+.hangman-score{border-top:1px solid var(--line);margin-top:18px;padding-top:14px;display:flex;justify-content:space-between;align-items:center}
+.hangman-score strong{font:700 20px 'Space Grotesk',sans-serif;color:var(--green)}
+@media(max-width:820px){.hangman-game{grid-template-columns:1fr}.hangman-drawing{height:240px}}
+@media(max-width:520px){.hangman-board,.hangman-side{padding:17px 14px}.hangman-keys{grid-template-columns:repeat(7,minmax(27px,1fr));gap:5px}.hangman-key{padding:8px 0}.hangman-letter{width:25px;height:36px;font-size:21px}.hangman-word{gap:6px}}
 </style></head>
 <body><main class="wrap"><header class="top"><div class="brand"><span class="logo">✳</span>plot twist<span style="font:400 10px 'DM Mono';color:#989a8e;letter-spacing:.08em;margin-left:1px">/ DAILY DRAW</span></div><div class="top-meta"><span class="mono">A little cinema, a little chaos</span><span class="streak mono" id="streak">✦ 0 day streak</span></div></header>
 <section class="hero"><div><div class="eyebrow mono" id="mode-eyebrow">YOUR DAILY MOVIE MYSTERY</div><h1>Drawn in 60.</h1><p>Watch the plot take shape. Name the movie before the last line.</p></div><div class="date mono"><span id="today"></span><strong id="mode-tagline">ONE MOVIE · ONE MINUTE</strong></div></section>
-<nav aria-label="Game mode" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px"><button class="mode-choice" id="daily-mode">Daily</button><button class="mode-choice" id="unlimited-mode">Unlimited</button><button class="mode-choice" id="random-mode">Random mode</button><button class="mode-choice" id="cover-art-mode">Cover Art</button><button class="mode-choice" id="weighted-mode">Weighted</button></nav><nav aria-label="Drawing category" style="display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px"><button class="category-choice" data-category="Movies">Movies</button><button class="category-choice" data-category="TV Shows">TV Shows</button><button class="category-choice" data-category="Video Games">Video Games</button><button class="category-choice" data-category="Music">Music</button><button class="category-choice" data-category="Pictionary">Pictionary</button></nav>
+<nav aria-label="Game mode" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px"><button class="mode-choice" id="daily-mode">Daily</button><button class="mode-choice" id="unlimited-mode">Unlimited</button><button class="mode-choice" id="random-mode">Random mode</button><button class="mode-choice" id="cover-art-mode">Cover Art</button><button class="mode-choice" id="weighted-mode">Weighted</button><button class="mode-choice" id="hangman-mode">Hangman</button></nav><nav aria-label="Drawing category" style="display:flex;gap:7px;flex-wrap:wrap;margin:0 0 18px"><button class="category-choice" data-category="Movies">Movies</button><button class="category-choice" data-category="TV Shows">TV Shows</button><button class="category-choice" data-category="Video Games">Video Games</button><button class="category-choice" data-category="Music">Music</button><button class="category-choice" data-category="Pictionary">Pictionary</button></nav>
 <section class="game"><article class="card board-card"><div class="board-head"><span class="board-status mono"><i class="live-dot"></i><span id="draw-label">LIVE DRAWING</span></span><span class="timer" id="timer">01:00</span></div><div class="canvas-wrap"><canvas id="board" aria-label="An animated Etch A Sketch line drawing"></canvas><span class="canvas-tag mono">ETCH-A-SKETCH</span><span class="canvas-mark mono">plot twist studio</span></div><div class="board-foot"><span id="board-caption">Turn the knobs · solve the drawing</span><span class="draw-progress" id="progress"></span></div></article>
 <aside class="card side"><div class="eyebrow mono">CAN YOU NAME THAT MOVIE?</div><h2 id="prompt">The story is unfolding…</h2><p class="side-intro" id="intro">A fresh movie, picked for today. The drawing follows the plot synopsis—keep your eyes on the details.</p><div class="rules"><div class="rule"><span class="mono">DRAW TIME</span><strong>60 SEC</strong></div><div class="rule"><span class="mono">FINAL GUESS</span><strong>1 AFTER TIME</strong></div><div class="rule"><span class="mono">MAX SCORE</span><strong>1,000 PTS</strong></div></div><div class="section-label mono">YOUR GUESS <span class="kbd">↵</span></div><form id="guess-form" class="input-row"><input id="guess" class="guess-input" autocomplete="off" placeholder="Type a movie title…" aria-label="Your guess"><button class="guess-btn" id="guess-btn">Guess ↗</button></form><button id="giveup" type="button" style="margin-top:9px;border:0;background:none;color:#777b70;font-size:12px;font-weight:700;padding:4px 0">Give up · reveal the answer</button><div class="notice" id="notice" role="status" aria-live="polite">You can guess as many times as you like while the clock is running.</div><div class="side-bottom"><div class="score-row"><div class="score"><small>YOUR SCORE TODAY</small><span id="score">—</span></div><div><button class="share" id="share">Share result ↗</button><button id="another" style="display:none;border:0;background:none;color:#304d3a;font-size:11px;font-weight:700;padding:8px">New drawing ↻</button></div></div></div></aside></section>
 <section id="weighted-game" class="weighted-game" aria-label="Weighted challenge" style="display:none">
@@ -60,6 +81,21 @@
   <div class="weighted-total mono">TOTAL POINTS <strong id="weighted-total">0</strong></div>
  </aside>
 </section>
+<section id="hangman-game" class="hangman-game" aria-label="Hangman game" style="display:none">
+ <article class="hangman-board card">
+  <div class="eyebrow mono">HANGMAN · GUESS THE WORD</div>
+  <nav class="hangman-categories" aria-label="Hangman categories"><button class="hangman-category-choice active" data-hang-category="Movies">Movies</button><button class="hangman-category-choice" data-hang-category="TV Shows">TV Shows</button><button class="hangman-category-choice" data-hang-category="Video Games">Video Games</button><button class="hangman-category-choice" data-hang-category="Music">Music</button><button class="hangman-category-choice" data-hang-category="Random Words">Random Words</button></nav>
+  <svg class="hangman-drawing" viewBox="0 0 300 260" role="img" aria-label="Hangman drawing"><path d="M35 238 H265 M75 238 V24 H190 V48 M75 60 L112 24"/><circle class="person-part" data-part="1" cx="190" cy="72" r="22"/><path class="person-part" data-part="2" d="M190 94 V158"/><path class="person-part" data-part="3" d="M190 112 L158 140"/><path class="person-part" data-part="4" d="M190 112 L222 140"/><path class="person-part" data-part="5" d="M190 158 L160 198"/><path class="person-part" data-part="6" d="M190 158 L220 198"/></svg>
+  <div class="hangman-word" id="hangman-word" aria-label="Hidden word"></div>
+ </article>
+ <aside class="hangman-side card">
+  <div class="eyebrow mono">UNLIMITED ROUNDS</div><h2 id="hangman-heading">Pick a letter.</h2>
+  <p class="side-intro" id="hangman-hint">Choose a category, then guess the hidden title one letter at a time.</p>
+  <div class="hangman-keys" id="hangman-keys" aria-label="Letter keyboard"></div>
+  <div class="notice hangman-status" id="hangman-status" role="status" aria-live="polite">You have 6 wrong guesses.</div>
+  <div class="hangman-score"><div><small class="mono">ROUND SCORE</small><strong id="hangman-score">—</strong></div><button class="primary" id="hangman-next" type="button">New word ↗</button></div>
+ </aside>
+</section>
 <footer class="footer"><span><strong>HOW TO PLAY</strong> &nbsp; Guess early for a bigger score. A missed draw earns one final guess.</span><span>New movie at midnight · local time</span></footer></main>
 <div class="overlay" id="overlay"><div class="modal"><div class="movie-icon" id="modal-icon">🎬</div><div class="eyebrow mono" id="modal-kicker">TODAY'S MOVIE</div><h2 id="modal-title">It's a wrap!</h2><p class="film-title" id="film-title"></p><p id="modal-copy"></p><p><a id="wiki-source" href="#" target="_blank" rel="noopener" style="color:#304d3a;font-size:12px;font-weight:700">Wikipedia article ↗</a></p><button class="primary" id="modal-btn">See the drawing</button></div></div>
 <script>
@@ -70,11 +106,12 @@ document.addEventListener('DOMContentLoaded',()=>{
  $('#random-mode').addEventListener('click',()=>setMode('random'));
  $('#cover-art-mode').addEventListener('click',()=>setMode('cover-art'));
  $('#weighted-mode').addEventListener('click',()=>setMode('weighted'));
+ $('#hangman-mode').addEventListener('click',()=>setMode('hangman'));
  $('#unlimited-mode').addEventListener('click',()=>{if(mode!=='unlimited')setMode('unlimited')});
  document.querySelectorAll('.category-choice').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('plottwist-category',b.dataset.category);localStorage.setItem('plottwist-mode','unlimited');localStorage.setItem('plottwist-unlimited-index','0');location.reload()}));
  document.querySelectorAll('.mode-choice').forEach(b=>b.classList.toggle('active',b.id===`${mode}-mode`));
- $('#mode-eyebrow').textContent=mode==='daily'?`TODAY’S RANDOM ${category.toUpperCase()} DRAWING`:mode==='random'?'RANDOM CATEGORY MODE':mode==='cover-art'?'COVER ART CHALLENGE':mode==='weighted'?'WEIGHT ESTIMATION GAME':`UNLIMITED · ${category.toUpperCase()}`;
- $('#mode-tagline').textContent=mode==='daily'?'ONE RANDOM CATEGORY · ONE DRAWING':mode==='random'?'NEW CATEGORY EACH ROUND':mode==='cover-art'?'MOVIE COVERS · 60 SECONDS':mode==='weighted'?'UNLIMITED · NO TIMER':'PLAY AS MUCH AS YOU LIKE';
+ $('#mode-eyebrow').textContent=mode==='daily'?`TODAY’S RANDOM ${category.toUpperCase()} DRAWING`:mode==='random'?'RANDOM CATEGORY MODE':mode==='cover-art'?'COVER ART CHALLENGE':mode==='weighted'?'WEIGHT ESTIMATION GAME':mode==='hangman'?'HANGMAN WORD GAME':`UNLIMITED · ${category.toUpperCase()}`;
+ $('#mode-tagline').textContent=mode==='daily'?'ONE RANDOM CATEGORY · ONE DRAWING':mode==='random'?'NEW CATEGORY EACH ROUND':mode==='cover-art'?'MOVIE COVERS · 60 SECONDS':mode==='weighted'?'UNLIMITED · NO TIMER':mode==='hangman'?'UNLIMITED · GUESS THE WORD':'PLAY AS MUCH AS YOU LIKE';
  $('#score').previousElementSibling.textContent=mode==='daily'?'YOUR SCORE TODAY':'ROUND SCORE';
  $('#prompt').textContent='Ready when you are.';
  if(mode==='cover-art')document.querySelector('.hero p').textContent='Watch a full hand-drawn movie poster come together. Guess before the 60-second timer runs out.';
@@ -145,10 +182,57 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   $('#weighted-next').addEventListener('click',nextWeighted);nextWeighted();
  }
+ if(mode==='hangman'){
+  document.querySelector('.hero h1').textContent='Hangman.';
+  document.querySelector('.hero p').textContent='Guess the hidden title one letter at a time. Six misses and the game is over.';
+  document.querySelector('.game').style.display='none';$('#weighted-game').style.display='none';
+  document.querySelector('[aria-label="Drawing category"]').style.display='none';$('#hangman-game').style.display='grid';
+  document.querySelector('.footer span').innerHTML='<strong>HOW TO PLAY</strong> &nbsp; Choose a category, then guess letters before the hangman is complete.';
+  document.querySelector('.footer span:last-child').textContent='Unlimited rounds · no timer';
+  const randomWords=['Airplane','Backpack','Butterfly','Campfire','Candle','Castle','Chocolate','Cloud','Compass','Crocodile','Desert','Diamond','Dragon','Drum','Eagle','Fireworks','Fountain','Galaxy','Giraffe','Glacier','Hammer','Helicopter','Hurricane','Jellyfish','Kangaroo','Lantern','Lighthouse','Marshmallow','Mountain','Mushroom','Necklace','Octopus','Oxygen','Penguin','Pineapple','Planet','Rainbow','Raspberry','Sailboat','Sandwich','Scarecrow','Snowflake','Staircase','Strawberry','Sunflower','Telescope','Thunder','Toothbrush','Treasure','Trombone','Turtle','Volcano','Waterfall','Whirlpool','Windmill','Zipper'];
+  let hangCategory=localStorage.getItem('plottwist-hangman-category')||'Movies';
+  const hangCategories=['Movies','TV Shows','Video Games','Music','Random Words'];
+  if(!hangCategories.includes(hangCategory))hangCategory='Movies';
+  let answer='',wrong=0,finished=false,points=0,guessed=new Set(),hangUsed=new Set();
+  const normalizeLetter=ch=>ch.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  const getWords=()=>hangCategory==='Random Words'?randomWords:catalog[hangCategory].map(item=>item.title);
+  const usedKey=()=>`plottwist-hangman-used-${hangCategory}`;
+  const wordLetters=()=>[...new Set([...answer].filter(ch=>/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(ch)).map(normalizeLetter))];
+  const renderWord=()=>{
+   const box=$('#hangman-word');box.replaceChildren();box.setAttribute('aria-label',finished?`Answer: ${answer}`:'Hidden word');
+   for(const ch of answer){const cell=document.createElement('span');const letter=/^[A-Za-zÀ-ÖØ-öø-ÿ]$/.test(ch);cell.className='hangman-letter'+(ch===' '?' space':'')+(!letter&&ch!==' '?' punctuation':'');cell.textContent=ch===' '?'':!letter?ch:finished||guessed.has(normalizeLetter(ch))?ch.toUpperCase():'';box.append(cell)}
+  };
+  const resetFigure=()=>document.querySelectorAll('.hangman-drawing .person-part').forEach(el=>el.style.display=Number(el.dataset.part)<=wrong?'block':'none');
+  const updateKeys=()=>document.querySelectorAll('.hangman-key').forEach(b=>{b.disabled=finished||guessed.has(b.dataset.letter)});
+  const complete=(won)=>{
+   finished=true;points=won?Math.max(100,1000-wrong*140):0;$('#hangman-score').textContent=`${points.toLocaleString()} / 1,000`;
+   $('#hangman-heading').textContent=won?'You got it!':'Round over';$('#hangman-status').className='notice hangman-status '+(won?'good':'bad');$('#hangman-status').textContent=won?`Correct: ${answer}. You scored ${points.toLocaleString()} points.`:`The answer was ${answer}. Try another word!`;
+   renderWord();updateKeys();
+  };
+  const guessLetter=letter=>{
+   letter=normalizeLetter(letter);if(finished||guessed.has(letter))return;guessed.add(letter);
+   if(!wordLetters().includes(letter)){wrong++;resetFigure()}
+   if(wordLetters().every(ch=>guessed.has(ch)))complete(true);else if(wrong>=6)complete(false);else{
+    const left=6-wrong;$('#hangman-status').className='notice hangman-status'+(wrong>=4?' bad':'');$('#hangman-status').textContent=`${left} ${left===1?'wrong guess':'wrong guesses'} left.`;
+    $('#hangman-heading').textContent='Pick a letter.';renderWord();updateKeys();
+   }
+  };
+  const nextWord=()=>{
+   let words=getWords();let stored=[];try{stored=JSON.parse(localStorage.getItem(usedKey())||'[]')}catch{}hangUsed=new Set(stored);
+   let fresh=words.filter(w=>!hangUsed.has(w));if(!fresh.length){hangUsed.clear();fresh=words}
+   answer=fresh[Math.floor(Math.random()*fresh.length)];hangUsed.add(answer);try{localStorage.setItem(usedKey(),JSON.stringify([...hangUsed]))}catch{}
+   wrong=0;finished=false;points=0;guessed=new Set();$('#hangman-score').textContent='—';$('#hangman-heading').textContent='Pick a letter.';$('#hangman-status').className='notice hangman-status';$('#hangman-status').textContent='You have 6 wrong guesses.';resetFigure();renderWord();updateKeys();
+  };
+  const keys=$('#hangman-keys');keys.replaceChildren();for(const letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'){const b=document.createElement('button');b.type='button';b.className='hangman-key';b.textContent=letter;b.dataset.letter=letter;b.setAttribute('aria-label',`Guess ${letter}`);b.addEventListener('click',()=>guessLetter(letter));keys.append(b)}
+  document.querySelectorAll('.hangman-category-choice').forEach(b=>{b.classList.toggle('active',b.dataset.hangCategory===hangCategory);b.addEventListener('click',()=>{hangCategory=b.dataset.hangCategory;localStorage.setItem('plottwist-hangman-category',hangCategory);document.querySelectorAll('.hangman-category-choice').forEach(x=>x.classList.toggle('active',x===b));nextWord()})});
+  $('#hangman-next').addEventListener('click',nextWord);
+  document.addEventListener('keydown',e=>{if(mode==='hangman'&&/^[a-z]$/i.test(e.key)&&!e.ctrlKey&&!e.altKey&&!e.metaKey)guessLetter(e.key)});
+  nextWord();
+ }
  document.querySelector('.side > .eyebrow').textContent=category==='Pictionary'?'NAME THAT WORD':'NAME THAT DRAWING';
- document.querySelector('.footer span:last-child').textContent=mode==='daily'?'New daily drawing at midnight · local time':mode==='random'?'A new category every round':mode==='cover-art'?'Movie covers':mode==='weighted'?'Unlimited rounds · no timer':'Choose a category and keep playing';
+ document.querySelector('.footer span:last-child').textContent=mode==='daily'?'New daily drawing at midnight · local time':mode==='random'?'A new category every round':mode==='cover-art'?'Movie covers':mode==='weighted'||mode==='hangman'?'Unlimited rounds · no timer':'Choose a category and keep playing';
  $('#intro').textContent=mode==='daily'?`Today’s category is ${category}. The drawing is inspired by its subject matter.`:mode==='random'?`Random mode · starting with ${category}. Each new round picks a different category.`:mode==='cover-art'?'Guess the movie from an original hand-drawn poster. Faster guesses score more.':mode==='weighted'?'Estimate how many right-side items would equal the weight on the left.':`${category} mode · choose a category above to switch. Each round has a fresh 60-second drawing.`;
- document.querySelector('[aria-label="Drawing category"]').style.display=['cover-art','weighted'].includes(mode)?'none':'flex';
+ document.querySelector('[aria-label="Drawing category"]').style.display=['cover-art','weighted','hangman'].includes(mode)?'none':'flex';
  $('#guess').placeholder=category==='Pictionary'?'Type the word…':'Type a title or answer…';
  $('#another').textContent=mode==='daily'?'New daily drawing ↻':'Next drawing ↗';
 });
@@ -234,7 +318,7 @@ const categoryNames=Object.keys(catalog);
 const coverCategories=['Movies'];
 const coverCatalog={Movies:catalog.Movies};
 const dateKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const key=dateKey();let hash=0;for(const c of key)hash=(hash*31+c.charCodeAt(0))>>>0;let mode=localStorage.getItem('plottwist-mode')||'daily';if(!['daily','unlimited','random','cover-art','weighted'].includes(mode))mode='daily';let unlimited=mode!=='daily';let category=localStorage.getItem('plottwist-category')||'Movies';if(!catalog[category])category='Movies';const dailyCategory=categoryNames[hash%categoryNames.length],dailyDefaultItem=Math.floor(hash/categoryNames.length)%catalog[dailyCategory].length;let dailyStoredCategory=localStorage.getItem('plottwist-daily-category-'+key)||dailyCategory;let dailyStoredItem=Number(localStorage.getItem('plottwist-daily-item-'+key));if(!catalog[dailyStoredCategory])dailyStoredCategory=dailyCategory;let movieIndex=mode==='daily'?(Number.isInteger(dailyStoredItem)&&localStorage.getItem('plottwist-daily-item-'+key)!==null?dailyStoredItem:dailyDefaultItem):Number(localStorage.getItem('plottwist-unlimited-index'))||0;if(mode==='cover-art'){const coverCat=localStorage.getItem('plottwist-cover-category');category=coverCategories.includes(coverCat)?coverCat:coverCategories[0];movieIndex=Number(localStorage.getItem('plottwist-cover-index'))||0}else if(mode==='random'){const oldRandom=localStorage.getItem('plottwist-random-category');if(oldRandom&&catalog[oldRandom])category=oldRandom;else category=dailyCategory}else if(mode==='daily')category=dailyStoredCategory;const activeCatalog=mode==='cover-art'?coverCatalog:catalog;let movie=activeCatalog[category][movieIndex%activeCatalog[category].length],round=1;
+const key=dateKey();let hash=0;for(const c of key)hash=(hash*31+c.charCodeAt(0))>>>0;let mode=localStorage.getItem('plottwist-mode')||'daily';if(!['daily','unlimited','random','cover-art','weighted','hangman'].includes(mode))mode='daily';let unlimited=mode!=='daily';let category=localStorage.getItem('plottwist-category')||'Movies';if(!catalog[category])category='Movies';const dailyCategory=categoryNames[hash%categoryNames.length],dailyDefaultItem=Math.floor(hash/categoryNames.length)%catalog[dailyCategory].length;let dailyStoredCategory=localStorage.getItem('plottwist-daily-category-'+key)||dailyCategory;let dailyStoredItem=Number(localStorage.getItem('plottwist-daily-item-'+key));if(!catalog[dailyStoredCategory])dailyStoredCategory=dailyCategory;let movieIndex=mode==='daily'?(Number.isInteger(dailyStoredItem)&&localStorage.getItem('plottwist-daily-item-'+key)!==null?dailyStoredItem:dailyDefaultItem):Number(localStorage.getItem('plottwist-unlimited-index'))||0;if(mode==='cover-art'){const coverCat=localStorage.getItem('plottwist-cover-category');category=coverCategories.includes(coverCat)?coverCat:coverCategories[0];movieIndex=Number(localStorage.getItem('plottwist-cover-index'))||0}else if(mode==='random'){const oldRandom=localStorage.getItem('plottwist-random-category');if(oldRandom&&catalog[oldRandom])category=oldRandom;else category=dailyCategory}else if(mode==='daily')category=dailyStoredCategory;const activeCatalog=mode==='cover-art'?coverCatalog:catalog;let movie=activeCatalog[category][movieIndex%activeCatalog[category].length],round=1;
 const usedStorageKey=mode==='daily'?`plottwist-used-daily-${key}`:mode==='random'?`plottwist-used-random-${key}`:mode==='cover-art'?`plottwist-used-cover-art-${key}`:`plottwist-used-${category}-${key}`;
 const $=s=>document.querySelector(s),canvas=$('#board'),ctx=canvas.getContext('2d');let currentVariant=localStorage.getItem('plottwist-variant-'+usedStorageKey)||'main',strokes=currentVariant==='alt'?movie.altStrokes:movie.strokes,altStrokes=movie.altStrokes,usedClues=new Set(JSON.parse(localStorage.getItem(usedStorageKey)||'[]')),strokeIndex=0,pointIndex=0,progress=0,phase='sketch',phaseFrame=0,started=false,ended=false,solved=false,finalGuessUsed=false,remaining=60,raf=null,timerId=null,score=0,completed=false;usedClues.add(`${category}::${movieIndex}::${currentVariant}`);localStorage.setItem(usedStorageKey,JSON.stringify([...usedClues]));
 let saved=unlimited?null:JSON.parse(localStorage.getItem('plottwist-'+key)||'null');const today=new Date();$('#today').textContent=today.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}).toUpperCase();document.querySelectorAll('.mode-choice').forEach(b=>b.classList.toggle('active',b.id===`${mode}-mode`));document.querySelectorAll('.category-choice').forEach(b=>b.classList.toggle('active',b.dataset.category===category));
